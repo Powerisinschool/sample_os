@@ -108,49 +108,39 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 //     }
 // }
 
+void terminal_scroll()
+{
+    for (size_t y = 1; y < VGA_HEIGHT; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++) {
+            size_t current_offset = get_offset(x, y);
+            size_t prev_offset = get_offset(x, y - 1);
+            terminal_buffer[prev_offset] = terminal_buffer[current_offset];
+        }
+    }
+
+    size_t last_line_offset = get_offset(0, VGA_HEIGHT - 1);
+    for (size_t x = 0; x < VGA_WIDTH; x++) {
+        terminal_buffer[last_line_offset + x] = vga_entry(' ', terminal_color);
+    }
+
+    terminal_row = VGA_HEIGHT - 1;
+}
+
 void terminal_putchar(char c)
 {
+    size_t offset = get_offset(terminal_column, terminal_row);
+
     if (c == '\n') {
         terminal_column = 0;
         if (++terminal_row == VGA_HEIGHT) {
-            // Scroll up
-            for (size_t y = 1; y < VGA_HEIGHT; y++) {
-                for (size_t x = 0; x < VGA_WIDTH; x++) {
-                    size_t current_offset = get_offset(x, y);
-                    size_t prev_offset = get_offset(x, y - 1);
-                    terminal_buffer[prev_offset] = terminal_buffer[current_offset];
-                }
-            }
-
-            // Clear the last line
-            size_t last_line_offset = get_offset(0, VGA_HEIGHT - 1);
-            for (size_t x = 0; x < VGA_WIDTH; x++) {
-                terminal_buffer[last_line_offset + x] = vga_entry(' ', terminal_color);
-            }
-
-            terminal_row = VGA_HEIGHT - 1;
+            terminal_scroll();
         }
     } else {
         terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
         if (++terminal_column == VGA_WIDTH) {
             terminal_column = 0;
             if (++terminal_row == VGA_HEIGHT) {
-                // Scroll up
-                for (size_t y = 1; y < VGA_HEIGHT; y++) {
-                    for (size_t x = 0; x < VGA_WIDTH; x++) {
-                        size_t current_offset = get_offset(x, y);
-                        size_t prev_offset = get_offset(x, y - 1);
-                        terminal_buffer[prev_offset] = terminal_buffer[current_offset];
-                    }
-                }
-
-                // Clear the last line
-                size_t last_line_offset = get_offset(0, VGA_HEIGHT - 1);
-                for (size_t x = 0; x < VGA_WIDTH; x++) {
-                    terminal_buffer[last_line_offset + x] = vga_entry(' ', terminal_color);
-                }
-
-                terminal_row = VGA_HEIGHT - 1;
+                terminal_scroll();
             }
         }
     }
