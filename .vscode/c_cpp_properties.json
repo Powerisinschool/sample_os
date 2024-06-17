@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "~/opt/cross/bin/i686-elf-gcc",
+            "cStandard": "gnu99",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "compilerArgs": [
+                "-ffreestanding",
+                "-nostdlib",
+                "-lgcc",
+                "-Wall",
+                "-Wextra"
+            ]
+        }
+    ],
+    "version": 4
+}
