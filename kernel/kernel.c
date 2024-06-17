@@ -73,7 +73,7 @@ uint16_t *terminal_buffer;				// Pointer to VGA text buffer memory.
  *
  * Return: Offset in memory corresponding to the position (x, y) in the VGA buffer.
  */
-size_t get_offset(size_t y, size_t x) { return (y * VGA_WIDTH + x); }
+size_t get_offset(size_t x, size_t y) { return (y * VGA_WIDTH + x); }
 
 /**
  * terminal_initialize - Initializes the VGA text mode terminal.
@@ -162,7 +162,7 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
  * the entire screen up by one line. It clears the last line and adjusts
  * the terminal_row pointer to maintain the visible screen within bounds.
  */
-void terminal_scroll()
+/*void terminal_scroll()
 {
     for (size_t y = 1; y < VGA_HEIGHT; y++) {
         for (size_t x = 0; x < VGA_WIDTH; x++) {
@@ -178,7 +178,7 @@ void terminal_scroll()
     }
 
     terminal_row = VGA_HEIGHT - 1;
-}
+}*/
 
 /**
  * terminal_putchar - Displays a character at the current cursor position in the terminal.
@@ -188,7 +188,7 @@ void terminal_scroll()
  * VGA text buffer. It handles newline characters by moving to the beginning of
  * the next line and implements scrolling when reaching the bottom of the screen.
  */
-void terminal_putchar(char c)
+/*void terminal_putchar(char c)
 {
     // size_t offset = get_offset(terminal_column, terminal_row);
 
@@ -205,6 +205,54 @@ void terminal_putchar(char c)
             terminal_column = 0;
             if (++terminal_row == VGA_HEIGHT) {
                 terminal_scroll();
+            }
+        }
+    }
+}*/
+
+void terminal_putchar(char c)
+{
+    if (c == '\n') {
+        terminal_column = 0;
+        if (++terminal_row == VGA_HEIGHT) {
+            // Scroll up
+            for (size_t y = 1; y < VGA_HEIGHT; y++) {
+                for (size_t x = 0; x < VGA_WIDTH; x++) {
+                    size_t current_offset = get_offset(x, y);
+                    size_t prev_offset = get_offset(x, y - 1);
+                    terminal_buffer[prev_offset] = terminal_buffer[current_offset];
+                }
+            }
+
+            // Clear the last line
+            size_t last_line_offset = get_offset(0, VGA_HEIGHT - 1);
+            for (size_t x = 0; x < VGA_WIDTH; x++) {
+                terminal_buffer[last_line_offset + x] = vga_entry(' ', terminal_color);
+            }
+
+            terminal_row = VGA_HEIGHT - 1;
+        }
+    } else {
+        terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+        if (++terminal_column == VGA_WIDTH) {
+            terminal_column = 0;
+            if (++terminal_row == VGA_HEIGHT) {
+                // Scroll up
+                for (size_t y = 1; y < VGA_HEIGHT; y++) {
+                    for (size_t x = 0; x < VGA_WIDTH; x++) {
+                        size_t current_offset = get_offset(x, y);
+                        size_t prev_offset = get_offset(x, y - 1);
+                        terminal_buffer[prev_offset] = terminal_buffer[current_offset];
+                    }
+                }
+
+                // Clear the last line
+                size_t last_line_offset = get_offset(0, VGA_HEIGHT - 1);
+                for (size_t x = 0; x < VGA_WIDTH; x++) {
+                    terminal_buffer[last_line_offset + x] = vga_entry(' ', terminal_color);
+                }
+
+                terminal_row = VGA_HEIGHT - 1;
             }
         }
     }

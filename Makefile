@@ -40,6 +40,7 @@ myos.bin: boot/boot.o kernel/kernel.o ${OBJ}
 # recreate our iso without recompiling everything
 clean:
 	rm -rf *.bin *.img *.dis *.o *.elf *.iso
+	rm -rf kernel/*.o boot/*.bin drivers/*.o
 
 confirm-multiboot:
 	cat ./validate-multiboot.sh | sh
