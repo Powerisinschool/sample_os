@@ -1,4 +1,10 @@
 #include <stddef.h>
+/**
+ * _strlen - computes the length of a string
+ * @str: pointer to the string
+ *
+ * Return: length of the string
+ */
 size_t _strlen(const char *str)
 {
     size_t len = 0;
@@ -80,7 +86,7 @@ void rev_string(char *s)
 /**
  *  _itoa - a function that convert an integer to a string
  *  @n: integer to be converted
- *  @str: the converted integer string
+ *  @str: buffer to store the converted string
  */
 
 void _itoa(int n, char str[])
