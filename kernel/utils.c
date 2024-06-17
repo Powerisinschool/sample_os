@@ -1,4 +1,6 @@
 #include <stddef.h>
+
+
 /**
  * _strlen - computes the length of a string
  * @str: pointer to the string
@@ -20,7 +22,6 @@ size_t _strlen(const char *str)
  * @n: bytes
  * Return: a pointer to dest
  */
-
 char *_memcpy(char *dest, char *src, unsigned int n)
 {
 	unsigned int i;
@@ -37,7 +38,6 @@ char *_memcpy(char *dest, char *src, unsigned int n)
  *
  *  Return: integer value of converted string
  */
-
 int _atoi(char *s)
 {
 	int sign = 1;
@@ -61,7 +61,6 @@ int _atoi(char *s)
  * rev_string -  a function that reverses a string
  * @s: string
  */
-
 void rev_string(char *s)
 {
 	size_t i = _strlen((const char *) s);
@@ -88,17 +87,43 @@ void rev_string(char *s)
  *  @n: integer to be converted
  *  @str: buffer to store the converted string
  */
-
-void _itoa(int n, char str[])
+char *_itoa(int value, char str[])
 {
-	int i, sign;
-	if ((sign = n) < 0) n = -n;
-	i = 0;
-	do {
-		str[i++] = n%10 + '0';
-	} while ((n /= 10) > 0);
+	int k = value;
+	int i = 0;
 
-	if (sign < 0) str[i++] = '-';
-	str[i] = '\0';
-	rev_string(str);
+	if (k < 0)
+	{
+		i++;
+		str[0] = '-';
+		k *= -1;
+		value *= -1;
+	}
+
+	while (k > 0) {
+		k /= 10;
+		i++;
+	}
+
+	k = value;
+
+	while (k > 0)
+	{
+		str[--i] = (k % 10) + '0';
+		k /= 10;
+	}
+	return (str);
 }
+// void _itoa(int n, char str[])
+// {
+// 	int i, sign;
+// 	if ((sign = n) < 0) n = -n;
+// 	i = 0;
+// 	do {
+// 		str[i++] = n%10 + '0';
+// 	} while ((n /= 10) > 0);
+
+// 	if (sign < 0) str[i++] = '-';
+// 	str[i] = '\0';
+// 	rev_string(str);
+// }
