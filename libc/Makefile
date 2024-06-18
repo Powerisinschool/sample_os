@@ -4,7 +4,7 @@ CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra
 AR=$(TARGET)-ar
 
 SYSROOT=../sysroot
-INCLUDE_DIR=-Iinclude
+INCLUDE_DIR=-Iinclude -I../kernel/include
 SRC_DIR=src
 OBJ_DIR=obj
 
@@ -29,6 +29,10 @@ string/strlen.o \
 
 
 OBJS = $(FREEOBJS:.o=.libc.o)
+
+ifndef VERBOSE
+.SILENT:
+endif
 
 .SUFFIXES: .o .libc.o .c
 
@@ -71,5 +75,6 @@ install-headers:
 
 clean:
 	rm -f $(OBJ_DIR) $(SYSROOT)/usr/lib/libc.a
+	rm -rf stdio/*.o stdlib/*.o string/*.o
 
 .PHONY: all install clean

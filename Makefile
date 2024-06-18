@@ -29,8 +29,12 @@ isodir/boot/grub/grub.cfg: grub/grub.cfg
 	@mkdir -p isodir/boot/grub
 	cp $< $@
 
-kernel/kernel.bin:
+kernel/kernel.bin: sysroot/usr/lib/libc.a
+	$(MAKE) -C ./kernel install
 	$(MAKE) -C ./kernel
+
+sysroot/usr/lib/libc.a:
+	$(MAKE) -C ./libc install
 
 clean: clean-iso
 	rm -rf *.img *.iso

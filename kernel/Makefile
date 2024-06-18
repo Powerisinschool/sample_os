@@ -8,7 +8,7 @@ ASS=$(TARGET)-as
 LIBC = $(SYSROOT)/usr/lib/libc.a
 OBJ_DIR = obj
 
-C_SOURCES = $(wildcard *.c drivers/*.c)
+C_SOURCES = $(wildcard src/*.c drivers/*.c)
 HEADERS = $(wildcard include/kernel/*.h drivers/*.h)
 OBJ = ${C_SOURCES:.c=.o}
 
@@ -18,11 +18,12 @@ ifndef VERBOSE
 .SILENT:
 endif
 
-kernel.bin: boot/boot.o kernel.o ${OBJ} $(LIBC)
+kernel.bin: boot/boot.o ${OBJ} $(LIBC)
 	$(CC) $(LDFLAGS) -o $@ $^
 	grub-file --is-x86-multiboot $@
 
-%.o: %.c ${HEADERS}
+$(OBJ_DIR)/%.o: src/%.c ${HEADERS}
+	mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %o: %.S
@@ -39,7 +40,7 @@ install-headers:
 
 clean:
 	rm -rf *.bin *.dis *.o *.elf
-	rm -rf kernel/*.o boot/*.bin drivers/*.o
+	rm -rf src/*.o boot/*.bin drivers/*.o
 
 confirm-multiboot:
 	cat ../validate-multiboot.sh | sh
