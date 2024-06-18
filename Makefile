@@ -29,6 +29,9 @@ isodir/boot/grub/grub.cfg: grub/grub.cfg
 	@mkdir -p isodir/boot/grub
 	cp $< $@
 
+kernel/kernel.bin:
+	$(MAKE) -C ./kernel
+
 clean: clean-iso
 	rm -rf *.img *.iso
 

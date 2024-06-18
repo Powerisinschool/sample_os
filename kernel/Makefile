@@ -14,9 +14,9 @@ OBJ = ${C_SOURCES:.c=.o}
 
 all: kernel.bin
 
-# ifndef VERBOSE
-# .SILENT:
-# endif
+ifndef VERBOSE
+.SILENT:
+endif
 
 kernel.bin: boot/boot.o kernel.o ${OBJ} $(LIBC)
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -27,6 +27,9 @@ kernel.bin: boot/boot.o kernel.o ${OBJ} $(LIBC)
 
 %o: %.S
 	$(ASS) $< -o $@
+
+$(LIBC):
+	$(MAKE) -C ../libc install
 
 install: install-headers
 
