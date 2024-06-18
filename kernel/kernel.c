@@ -1,13 +1,14 @@
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-#include "utils.h"    // Custom header for additional utility functions
+// #include "utils.h"    // Custom header for additional utility functions
 
-#if defined(__linux__)
+#include <kernel/tty.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef __linux__
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
 
-#if !defined(__i386__)
+#ifndef __i386__
 #error "This kernel needs to be compiled with a ix86-elf compiler"
 #endif
 
@@ -282,7 +283,7 @@ void terminal_write(const char *data, size_t size)
  */
 void terminal_writestring(const char *data)
 {
-    terminal_write(data, _strlen(data));
+    terminal_write(data, strlen(data));
 }
 
 /**

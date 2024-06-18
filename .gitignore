@@ -3,3 +3,5 @@
 *.bin
 *.elf
 *.iso
+Makefile.old
+sysroot/

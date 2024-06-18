@@ -1,1 +1,8 @@
-{ }
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "stdio.h": "c",
+        "tty.h": "c",
+        "stdint.h": "c"
+    }
+}

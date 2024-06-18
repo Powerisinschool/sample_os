@@ -1,23 +1,35 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Sample OS",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/sysroot/usr/include",
+                "${workspaceFolder}/libc/include",
+                "${workspaceFolder}/kernel/include",
+                "${workspaceFolder}/kernel"
             ],
             "defines": [],
             "compilerPath": "~/opt/cross/bin/i686-elf-gcc",
             "cStandard": "gnu99",
             "cppStandard": "gnu++17",
-            "intelliSenseMode": "linux-gcc-x64",
-            "configurationProvider": "ms-vscode.makefile-tools",
+            "intelliSenseMode": "gcc-x86",
+            // "configurationProvider": "ms-vscode.makefile-tools",
             "compilerArgs": [
                 "-ffreestanding",
                 "-nostdlib",
-                "-lgcc",
+                // "-lgcc",
                 "-Wall",
                 "-Wextra"
-            ]
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/sysroot/usr/include",
+                    "${workspaceFolder}/libc/include",
+                    "${workspaceFolder}/kernel"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
         }
     ],
     "version": 4
