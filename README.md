@@ -1,5 +1,5 @@
 # Sample OS
-This is my OS (SAMPLE OS), a simple operating system written in C and assembly.
+This is my simple OS project (SAMPLE_OS), a simple operating system written in C and assembly.
 This project includes a minimal C standard library and a custom sysroot to manage dependencies.
 Here (in this `README.md`), you are provided with setup instructions, build processes, and an
 overview of the project's structure.
